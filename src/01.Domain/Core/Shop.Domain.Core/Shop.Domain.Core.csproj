@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="CategoryAgg\Dtos\" />
+    <Folder Include="CategoryAgg\Contracts\" />
+    <Folder Include="OrderAgg\Dtos\" />
+    <Folder Include="OrderAgg\Contracts\" />
+    <Folder Include="ProductAgg\Dtos\" />
+    <Folder Include="ProductAgg\Contracts\" />
+    <Folder Include="UserAgg\Dtos\" />
+    <Folder Include="UserAgg\Contracts\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/00.Framework/">
+    <Project Path="src/00.Framework/Shop.Framework/Shop.Framework.csproj" />
+  </Folder>
+  <Folder Name="/src/01.Domain/" />
+  <Folder Name="/src/01.Domain/Core/">
+    <Project Path="src/01.Domain/Core/Shop.Domain.Core/Shop.Domain.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/01.Domain/Service/">
+    <Project Path="src/01.Domain/Service/Shop.Domain.Service.AppService/Shop.Domain.Service.AppService.csproj" />
+    <Project Path="src/01.Domain/Service/Shop.Domain.Service.DomainService/Shop.Domain.Service.DomainService.csproj" />
+  </Folder>
+  <Folder Name="/src/02.Infrastructure/">
+    <Project Path="src/02.Infrastructure/Shop.Infrastructure.EFCore/Shop.Infrastructure.EFCore.csproj" />
+  </Folder>
+  <Folder Name="/src/03.Presentation/">
+    <Project Path="src/03.Presentation/Shop.Presentation.RazorPages/Shop.Presentation.RazorPages.csproj" />
+  </Folder>
+</Solution>
