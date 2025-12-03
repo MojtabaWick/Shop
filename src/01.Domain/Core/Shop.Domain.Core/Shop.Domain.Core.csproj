@@ -8,13 +8,12 @@
 
   <ItemGroup>
     <Folder Include="CategoryAgg\Dtos\" />
-    <Folder Include="CategoryAgg\Contracts\" />
     <Folder Include="OrderAgg\Dtos\" />
-    <Folder Include="OrderAgg\Contracts\" />
     <Folder Include="ProductAgg\Dtos\" />
-    <Folder Include="ProductAgg\Contracts\" />
-    <Folder Include="UserAgg\Dtos\" />
-    <Folder Include="UserAgg\Contracts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
   </ItemGroup>
 
 </Project>

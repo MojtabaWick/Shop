@@ -14,10 +14,10 @@ namespace Shop.Domain.Core.OrderAgg.Entities
         public int ProductId { get; set; }
         public Product Product { get; set; }
 
-        public int UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
 
         public int Quantity { get; set; }
 
-        public int TotalPrice => UnitPrice * Quantity;
+        public double TotalPrice => UnitPrice * Quantity;
     }
 }

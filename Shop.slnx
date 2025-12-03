@@ -15,6 +15,6 @@
     <Project Path="src/02.Infrastructure/Shop.Infrastructure.EFCore/Shop.Infrastructure.EFCore.csproj" />
   </Folder>
   <Folder Name="/src/03.Presentation/">
-    <Project Path="src/03.Presentation/Shop.Presentation.RazorPages/Shop.Presentation.RazorPages.csproj" />
+    <Project Path="src/03.Presentation/Shop.Presentation.RazorPages/Shop.Presentation.RazorPages.csproj" Id="733a3c69-f5ab-40d9-ad12-9462d7007214" />
   </Folder>
 </Solution>
