@@ -3,8 +3,10 @@ using Shop.Domain.Core.ProductAgg.Entities;
 
 namespace Shop.Domain.Core.UserAgg.Entities
 {
-    public class CartItem : BaseEntity
+    public class CartItem
     {
+        public int Id { get; set; }
+
         public int UserId { get; set; }
         public User User { get; set; }
 

@@ -27,7 +27,7 @@ namespace Shop.Presentation.RazorPages.Pages
             {
                 InMemoryDataBase.OnlineUser = new OnlineUser
                 {
-                    Id = loginResult.Data.Id,
+                    Id = loginResult.Data!.Id,
                     FullName = loginResult.Data.FullName,
                 };
 

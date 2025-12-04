@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Core._Common;
+using Shop.Domain.Core.CategoryAgg.Entities;
 using Shop.Domain.Core.OrderAgg.Entities;
 using Shop.Domain.Core.ProductAgg.Entities;
 using Shop.Domain.Core.UserAgg.Entities;
@@ -19,6 +20,21 @@ namespace Shop.Infrastructure.EFCore.Persistence
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            modelBuilder.Entity<Product>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            modelBuilder.Entity<Order>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            modelBuilder.Entity<User>()
+                .HasQueryFilter(x => !x.IsDeleted);
         }
 
         public override int SaveChanges()

@@ -8,7 +8,7 @@ namespace Shop.Domain.Core.OrderAgg.Entities
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public int TotalPrice { get; set; } // مجموع قیمت سفارش
+        public decimal TotalPrice { get; set; } // مجموع قیمت سفارش
 
         // Navigation
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
