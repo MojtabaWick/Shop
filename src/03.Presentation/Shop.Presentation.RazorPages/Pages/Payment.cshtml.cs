@@ -47,6 +47,13 @@ namespace Shop.Presentation.RazorPages.Pages
             }
             else
             {
+                // دوباره سفارش را لود می‌کنیم تا در صفحه نمایش داده شود
+                Order = await _orderService.GetOrderById(orderId);
+                if (Order == null || Order.UserId != userId)
+                {
+                    return NotFound();
+                }
+                WalletBalance = await _userAppService.GetUserWalletBalance(userId);
                 Message = result.Message!;
                 return Page();
             }
