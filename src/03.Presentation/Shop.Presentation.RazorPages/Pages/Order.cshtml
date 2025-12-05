@@ -1,0 +1,55 @@
+﻿@page "{orderId:int}"
+@model Shop.Presentation.RazorPages.Pages.OrderModel
+
+@{
+    ViewData["Title"] = "فاکتور سفارش";
+}
+
+<!-- ... استایل و هدر مثل قبل -->
+
+<div class="container">
+    <h1 class="text-center my-4">فاکتور سفارش شما</h1>
+
+    @if (Model.Order == null || !Model.Order.Items.Any())
+    {
+        <p class="text-center">سفارشی یافت نشد.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover order-table">
+            <thead class="table-light">
+            <tr>
+                <th>تصویر</th>
+                <th>عنوان محصول</th>
+                <th>قیمت واحد (تومان)</th>
+                <th>تعداد</th>
+                <th>جمع کل</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Order.Items)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Product.ImageUrl" alt="@item.Product.Title" class="order-item-img" />
+                    </td>
+                    <td>@item.Product.Title</td>
+                    <td>@item.UnitPrice.ToString("N0")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.TotalPrice.ToString("N0")</td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="text-end">جمع کل:</td>
+                <td class="total-price">@Model.Order.TotalPrice.ToString("N0") تومان</td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <a href="/Payment/@Model.Order.Id" class="btn btn-success proceed-btn">پرداخت و تکمیل سفارش</a>
+    }
+</div>
+
+<!-- ... اسکریپت بوت‌استرپ مثل قبل -->

@@ -1,4 +1,5 @@
-﻿using Shop.Presentation.RazorPages.Models;
+﻿using Shop.Domain.Core.UserAgg.Entities;
+using Shop.Presentation.RazorPages.Models;
 
 namespace Shop.Presentation.RazorPages.DataBase
 {

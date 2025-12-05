@@ -5,5 +5,17 @@ namespace Shop.Domain.Core.UserAgg.Contracts
     public interface IUserDomainService
     {
         public Task<LoginOutputDto?> Login(UserLoginInput input);
+
+        public Task<bool> AddToCart(int userId, int productId, int quantity);
+
+        public Task<List<CartItemDto>> GetCartItemsByUserId(int userId);
+
+        public Task UpdateCartItems(List<CartItemUpdateDto> updatedItems);
+
+        public Task<decimal> GetUserWalletBalance(int userId);
+
+        public Task<bool> DecreaseUserWalletBalance(int userId, decimal amount);
+
+        public Task<bool> IncreaseUserWalletBalance(int userId, decimal amount);
     }
 }

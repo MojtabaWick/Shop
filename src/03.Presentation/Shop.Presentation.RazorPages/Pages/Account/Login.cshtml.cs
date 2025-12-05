@@ -5,23 +5,30 @@ using Shop.Domain.Core.UserAgg.Dtos;
 using Shop.Presentation.RazorPages.DataBase;
 using Shop.Presentation.RazorPages.Models;
 
-namespace Shop.Presentation.RazorPages.Pages
+namespace Shop.Presentation.RazorPages.Pages.Account
 {
-    public class LoginModel(IUserAppService userAppService) : PageModel
+    public class LoginModel : PageModel
     {
-        public string ResultMessage { get; set; }
+        private readonly IUserAppService _userAppService;
+
+        public LoginModel(IUserAppService userAppService)
+        {
+            _userAppService = userAppService;
+        }
+
+        public string? ResultMessage { get; set; }
 
         [BindProperty]
         public UserLoginInput User { get; set; } = new UserLoginInput();
 
-        public async Task OnGet(string message)
+        public void OnGet(string? message)
         {
             ResultMessage = message;
         }
 
         public async Task<IActionResult> OnPost()
         {
-            var loginResult = await userAppService.Login(User);
+            var loginResult = await _userAppService.Login(User);
 
             if (loginResult.IsSuccess)
             {
@@ -31,7 +38,7 @@ namespace Shop.Presentation.RazorPages.Pages
                     FullName = loginResult.Data.FullName,
                 };
 
-                return RedirectToPage("/Admin/Posts/Index");
+                return RedirectToPage("/Index");
             }
 
             return RedirectToPage("/Account/Login", new { message = loginResult.Message });

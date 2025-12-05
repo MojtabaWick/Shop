@@ -1,37 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Shop.Domain.Core.ProductAgg.Contracts;
+using Shop.Domain.Core.ProductAgg.Dtos;
+using Shop.Domain.Core.UserAgg.Contracts;
+using Shop.Presentation.RazorPages.DataBase;
 
 namespace Shop.Presentation.RazorPages.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel(IProductAppService productAppService, IUserAppService userAppService) : PageModel
 {
-    public List<ProductDto> Products { get; set; }
+    public List<ProductSummeryDto> Products { get; set; }
     public int CartCount { get; set; }
 
-    public void OnGet()
+    public async Task OnGetAsync()
     {
-        Products = new()
-        {
-            new ProductDto { Id = 1, Name = "کیف ورزشی", Description = "کیف محکم و با کیفیت", Price = 350000, ImageUrl = "https://via.placeholder.com/400x250" },
-            new ProductDto { Id = 2, Name = "کفش مردانه", Description = "مناسب پیاده‌روی", Price = 720000, ImageUrl = "https://via.placeholder.com/400x250" },
-            new ProductDto { Id = 3, Name = "هدفون بلوتوث", Description = "صدای با کیفیت بالا", Price = 450000, ImageUrl = "https://via.placeholder.com/400x250" },
-        };
-        CartCount = 1;
+        Products = await productAppService.GetHomeProducts();
+        CartCount = 0;
         ViewData["CartCount"] = CartCount;
     }
 
     public IActionResult OnPostAddToCart(int id)
     {
         // TODO: اینجا بعداً آیتم رو به سبد خرید اضافه می‌کنی
+        userAppService.AddToCart(InMemoryDataBase.OnlineUser.Id, id, 1);
         return RedirectToPage();
     }
-}
-
-public class ProductDto
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public int Price { get; set; }
-    public string ImageUrl { get; set; }
 }

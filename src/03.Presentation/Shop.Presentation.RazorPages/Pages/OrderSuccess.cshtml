@@ -1,0 +1,11 @@
+﻿@page "{orderId:int}"
+@model Shop.Presentation.RazorPages.Pages.OrderSuccessModel
+
+@{
+    ViewData["Title"] = "سفارش موفق";
+}
+
+<div class="container">
+    <h1 class="text-center my-4">پرداخت موفق!</h1>
+    <p>سفارش شماره @Model.OrderId با موفقیت پرداخت شد.</p>
+</div>

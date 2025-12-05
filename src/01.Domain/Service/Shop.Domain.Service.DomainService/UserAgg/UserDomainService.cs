@@ -1,0 +1,51 @@
+﻿using Shop.Domain.Core.UserAgg.Contracts;
+using Shop.Domain.Core.UserAgg.Dtos;
+using Shop.Domain.Core.UserAgg.Entities;
+
+namespace Shop.Domain.Service.DomainService.UserAgg
+{
+    public class UserDomainService(IUserRepository userRepository) : IUserDomainService
+    {
+        public async Task<LoginOutputDto?> Login(UserLoginInput input)
+        {
+            return await userRepository.Login(input);
+        }
+
+        public async Task<bool> AddToCart(int userId, int productId, int quantity)
+        {
+            var cartItem = new CartItem()
+            {
+                UserId = userId,
+                ProductId = productId,
+                Quantity = quantity
+            };
+
+            return await userRepository.AddToCart(cartItem);
+        }
+
+        public async Task<List<CartItemDto>> GetCartItemsByUserId(int userId)
+        {
+            return await userRepository.GetCartItemsByUserId(userId);
+        }
+
+        public async Task UpdateCartItems(List<CartItemUpdateDto> updatedItems)
+        {
+            await userRepository.UpdateCartItems(updatedItems);
+        }
+
+        public async Task<decimal> GetUserWalletBalance(int userId)
+        {
+            return await userRepository.GetUserWalletBalance(userId);
+        }
+
+        public async Task<bool> DecreaseUserWalletBalance(int userId, decimal amount)
+        {
+            return await userRepository.DecreaseUserWalletBalance(userId, amount);
+        }
+
+        public async Task<bool> IncreaseUserWalletBalance(int userId, decimal amount)
+        {
+            return await userRepository.IncreaseUserWalletBalance(userId, amount);
+        }
+    }
+}
