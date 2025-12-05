@@ -17,6 +17,7 @@ using Shop.Domain.Service.DomainService.UserAgg;
 using Shop.Infrastructure.EFCore.Repositories.CategoryAgg;
 using Shop.Infrastructure.EFCore.Repositories.OrderAgg;
 using Shop.Infrastructure.EFCore.Repositories.UserAgg;
+using Shop.Presentation.RazorPages.Services.OnlineCartItem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<ICategoryDomainService, CategoryDomainService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped<IOnlineCartItemService, OnlineCartItemService>();
 
 var app = builder.Build();
 

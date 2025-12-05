@@ -20,6 +20,19 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
                 }).FirstOrDefaultAsync();
         }
 
+        public async Task AddListCartItems(List<CartItem> input)
+        {
+            await dbContext.CartItems.AddRangeAsync(input);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> UsrCartItemsCount(int userId)
+        {
+            return await dbContext.CartItems
+                .Where(c => c.UserId == userId)
+                .CountAsync();
+        }
+
         public async Task<bool> AddToCart(CartItem cartItem)
         {
             await dbContext.CartItems.AddAsync(cartItem);

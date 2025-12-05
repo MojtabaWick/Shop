@@ -8,6 +8,10 @@ namespace Shop.Domain.Core.UserAgg.Contracts
 
         public Task<bool> AddToCart(int userId, int productId, int quantity);
 
+        public Task AddListCartItems(List<CartItemInputDto> input);
+
+        public Task<int> UsrCartItemsCount(int userId);
+
         public Task<List<CartItemDto>> GetCartItemsByUserId(int userId);
 
         public Task UpdateCartItems(List<CartItemUpdateDto> updatedItems);

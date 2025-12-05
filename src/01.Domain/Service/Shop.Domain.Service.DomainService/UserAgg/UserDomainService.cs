@@ -23,6 +23,29 @@ namespace Shop.Domain.Service.DomainService.UserAgg
             return await userRepository.AddToCart(cartItem);
         }
 
+        public async Task AddListCartItems(List<CartItemInputDto> input)
+        {
+            var newListCartItem = new List<CartItem>();
+
+            foreach (var item in input)
+            {
+                var newCartItem = new CartItem()
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UserId = item.UserId,
+                };
+                newListCartItem.Add(newCartItem);
+            }
+
+            await userRepository.AddListCartItems(newListCartItem);
+        }
+
+        public async Task<int> UsrCartItemsCount(int userId)
+        {
+            return await userRepository.UsrCartItemsCount(userId);
+        }
+
         public async Task<List<CartItemDto>> GetCartItemsByUserId(int userId)
         {
             return await userRepository.GetCartItemsByUserId(userId);

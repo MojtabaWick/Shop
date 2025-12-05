@@ -12,9 +12,13 @@ namespace Shop.Domain.Core.UserAgg.Contracts
 
         public Task<Result<bool>> AddToCart(int userId, int productId, int quantity);
 
+        public Task AddListCartItems(List<CartItemInputDto> input);
+
         public Task<List<CartItemDto>> GetCartItemsByUserId(int userId);
 
         public Task UpdateCartItems(List<CartItemUpdateDto> updatedItems);
+
+        public Task<int> UserCartItemsCount(int userId);
 
         public Task<decimal> GetUserWalletBalance(int userId);
 

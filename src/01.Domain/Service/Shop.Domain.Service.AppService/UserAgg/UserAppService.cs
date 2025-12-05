@@ -32,6 +32,11 @@ namespace Shop.Domain.Service.AppService.UserAgg
             }
         }
 
+        public async Task AddListCartItems(List<CartItemInputDto> input)
+        {
+            await userDomainService.AddListCartItems(input);
+        }
+
         public async Task<List<CartItemDto>> GetCartItemsByUserId(int userId)
         {
             return await userDomainService.GetCartItemsByUserId(userId);
@@ -40,6 +45,11 @@ namespace Shop.Domain.Service.AppService.UserAgg
         public async Task UpdateCartItems(List<CartItemUpdateDto> updatedItems)
         {
             await userDomainService.UpdateCartItems(updatedItems);
+        }
+
+        public async Task<int> UserCartItemsCount(int userId)
+        {
+            return await userDomainService.UsrCartItemsCount(userId);
         }
 
         public async Task<decimal> GetUserWalletBalance(int userId)
