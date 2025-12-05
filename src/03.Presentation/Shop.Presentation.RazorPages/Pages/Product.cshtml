@@ -1,0 +1,28 @@
+﻿@page "{id:int}"
+@model Shop.Presentation.RazorPages.Pages.ProductModel
+@{
+    ViewData["Title"] = Model.Product.Title;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- تصویر محصول -->
+        <div class="col-md-6">
+            <img src="@Model.Product.ImageUrl" class="img-fluid rounded shadow" alt="@Model.Product.Title" />
+        </div>
+        <!-- جزئیات محصول -->
+        <div class="col-md-6">
+            <h2 class="fw-bold">@Model.Product.Title</h2>
+            <p class="text-muted">قیمت: @Model.Product.Price.ToString("N0") تومان</p>
+            <p class="text-muted">موجودی: @Model.Product.Stock</p>
+            <h5 class="mt-4">توضیحات:</h5>
+            <p>@Model.Product.Description</p>
+
+            <!-- دکمه اضافه به سبد خرید -->
+            <form method="post" asp-page-handler="AddToCart">
+                <input type="hidden" name="id" value="@Model.Product.Id" />
+                <button class="btn btn-success btn-lg">اضافه به سبد خرید</button>
+            </form>
+        </div>
+    </div>
+</div>
