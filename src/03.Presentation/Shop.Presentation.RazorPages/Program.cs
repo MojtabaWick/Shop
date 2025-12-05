@@ -6,8 +6,12 @@ using Shop.Domain.Service.DomainService.ProductAgg;
 using Shop.Infrastructure.EFCore.Persistence;
 using Shop.Infrastructure.EFCore.Repositories.ProductAgg;
 using System;
+using Shop.Domain.Core.OrderAgg.Contracts;
+using Shop.Domain.Service.AppService.OrderAgg;
 using Shop.Domain.Service.AppService.UserAgg;
+using Shop.Domain.Service.DomainService.OrderAgg;
 using Shop.Domain.Service.DomainService.UserAgg;
+using Shop.Infrastructure.EFCore.Repositories.OrderAgg;
 using Shop.Infrastructure.EFCore.Repositories.UserAgg;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +28,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IUserDomainService, UserDomainService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IOrderAppService, OrderAppService>();
+builder.Services.AddScoped<IOrderDomainService, OrderDomainService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
 

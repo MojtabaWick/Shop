@@ -20,9 +20,9 @@ namespace Shop.Domain.Service.DomainService.ProductAgg
             return await productRepository.GetProductById(productId);
         }
 
-        public Task<bool> DecreaseStock(int productId, int quantity)
+        public async Task<bool> DecreaseStock(int productId, int quantity)
         {
-            throw new NotImplementedException();
+            return await productRepository.DecreaseStock(productId, quantity);
         }
     }
 }

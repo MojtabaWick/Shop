@@ -15,14 +15,14 @@ namespace Shop.Domain.Service.DomainService.OrderAgg
             return await orderRepository.GetOrderById(orderId);
         }
 
-        public Task<decimal> GetOrderTotalPrice(int orderId)
+        public async Task<decimal> GetOrderTotalPrice(int orderId)
         {
-            throw new NotImplementedException();
+            return await orderRepository.GetOrderTotalPrice(orderId);
         }
 
-        public Task<bool> PayOrder(int orderId)
+        public async Task<bool> PayOrder(int orderId)
         {
-            throw new NotImplementedException();
+            return await orderRepository.PayOrder(orderId);
         }
     }
 }
