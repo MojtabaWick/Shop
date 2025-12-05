@@ -32,6 +32,8 @@ namespace Shop.Presentation.RazorPages.Services.OnlineCartItem
             }
 
             userAppService.AddListCartItems(newCatItemsList);
+
+            InMemoryDataBase.OnlineCartItems.Clear();
         }
     }
 }

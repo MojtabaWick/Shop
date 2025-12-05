@@ -20,7 +20,7 @@
 
             <!-- دکمه اضافه به سبد خرید -->
             <form method="post" asp-page-handler="AddToCart">
-                <input type="hidden" name="id" value="@Model.Product.Id" />
+                <input type="hidden" name="productId" value="@Model.Product.Id" />
                 <button class="btn btn-success btn-lg">اضافه به سبد خرید</button>
             </form>
         </div>

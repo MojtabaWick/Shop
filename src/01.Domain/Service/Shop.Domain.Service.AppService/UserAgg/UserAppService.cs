@@ -66,5 +66,10 @@ namespace Shop.Domain.Service.AppService.UserAgg
         {
             return await userDomainService.IncreaseUserWalletBalance(userId, amount);
         }
+
+        public async Task DeleteCartItem(int CartId)
+        {
+            await userDomainService.DeleteCartItem(CartId);
+        }
     }
 }

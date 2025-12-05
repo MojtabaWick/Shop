@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "سبد خرید";
 }
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -36,13 +35,13 @@
 <body>
     <div class="container">
         <h1 class="text-center my-4">سبد خرید شما</h1>
-
         @if (Model.CartItems == null || Model.CartItems.Count == 0)
         {
             <p class="text-center">سبد خرید شما خالی است.</p>
         }
         else
         {
+            <form method="post" asp-page-handler="Update"> 
                 <table class="table table-bordered table-hover cart-table">
                     <thead class="table-light">
                         <tr>
@@ -51,11 +50,13 @@
                             <th>قیمت (تومان)</th>
                             <th>تعداد</th>
                             <th>جمع کل</th>
+                            <th>عملیات</th> 
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.CartItems)
+                        @for (int i = 0; i < Model.CartItems.Count; i++) 
                         {
+                            var item = Model.CartItems[i];
                             <tr>
                                 <td>
                                     <img src="@item.ProductDto.ImageUrl" alt="@item.ProductDto.Title" class="cart-item-img" />
@@ -63,26 +64,29 @@
                                 <td>@item.ProductDto.Title</td>
                                 <td>@item.ProductDto.Price.ToString("N0")</td>
                                 <td>
-                                    <input type="hidden" name="updatedItems[@Model.CartItems.IndexOf(item)].Id" value="@item.Id" />
-                                    <input type="number" name="updatedItems[@Model.CartItems.IndexOf(item)].Quantity" value="@item.Quantity" min="1" class="form-control quantity-input" />
+                                    <input type="hidden" name="updatedItems[@i].Id" value="@item.Id" />
+                                    <input type="number" name="updatedItems[@i].Quantity" value="@item.Quantity" min="1" class="form-control quantity-input" />
                                 </td>
                                 <td>@((item.Quantity * item.ProductDto.Price).ToString("N0"))</td>
+                                <td>
+                                    <!-- فرم جداگانه برای حذف -->
+                                    <a asp-page-handler="Delete" 
+                                       asp-route-Id="@item.Id"
+                                       class="btn btn-sm btn-outline-danger">
+                                        حذف
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
-                <form method="post" asp-page-handler="Update">
-                    <!-- جدول و ورودی‌ها مثل قبل -->
-                    <button type="submit" class="btn btn-primary update-btn">به‌روزرسانی سبد خرید</button>
-                </form>
-
-                <form method="post" asp-page-handler="CreateOrder">
-                    <button type="submit" class="btn btn-success update-btn ms-2">ادامه مراحل خرید</button>
-                </form>
+                <button type="submit" class="btn btn-primary update-btn">به‌روزرسانی سبد خرید</button>
+            </form>
+            <form method="post" asp-page-handler="CreateOrder">
+                <button type="submit" class="btn btn-success update-btn ms-2">ادامه مراحل خرید</button>
+            </form>
         }
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

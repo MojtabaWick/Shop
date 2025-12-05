@@ -4,16 +4,19 @@ using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Dtos;
 using Shop.Presentation.RazorPages.DataBase;
 using Shop.Presentation.RazorPages.Models;
+using Shop.Presentation.RazorPages.Services.OnlineCartItem;
 
 namespace Shop.Presentation.RazorPages.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly IUserAppService _userAppService;
+        private readonly IOnlineCartItemService _onlineCartItemService;
 
-        public LoginModel(IUserAppService userAppService)
+        public LoginModel(IUserAppService userAppService, IOnlineCartItemService onlineCartItemService)
         {
             _userAppService = userAppService;
+            _onlineCartItemService = onlineCartItemService;
         }
 
         public string? ResultMessage { get; set; }
@@ -37,6 +40,8 @@ namespace Shop.Presentation.RazorPages.Pages.Account
                     Id = loginResult.Data!.Id,
                     FullName = loginResult.Data.FullName,
                 };
+
+                _onlineCartItemService.AddOnlineCartItemsToDataBase(InMemoryDataBase.OnlineUser.Id);
 
                 return RedirectToPage("/Index");
             }

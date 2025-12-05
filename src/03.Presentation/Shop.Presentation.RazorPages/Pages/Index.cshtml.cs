@@ -49,15 +49,6 @@ public class IndexModel : PageModel
             Products = await _productAppService.GetHomeProducts();
         }
 
-        if (InMemoryDataBase.OnlineUser is null)
-        {
-            CartCount = InMemoryDataBase.OnlineCartItems.Count;
-        }
-        else
-        {
-            CartCount = await _userAppService.UserCartItemsCount(InMemoryDataBase.OnlineUser.Id);
-        }
-
         ViewData["CartCount"] = CartCount;
     }
 

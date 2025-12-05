@@ -43,7 +43,7 @@
                                 <span class="fw-bold">@product.Price.ToString("N0") تومان</span>
                                 <div> <!-- برای گروه کردن دکمه‌ها -->
                                     <form method="post" asp-page-handler="AddToCart" class="d-inline">
-                                        <input type="hidden" name="id" value="@product.Id" />
+                                        <input type="hidden" name="productId" value="@product.Id" />
                                         <button class="btn btn-success">خرید</button>
                                     </form>
                                     <a asp-page="/Product" asp-route-id="@product.Id" class="btn btn-info ms-2">جزئیات</a> <!-- دکمه جدید -->

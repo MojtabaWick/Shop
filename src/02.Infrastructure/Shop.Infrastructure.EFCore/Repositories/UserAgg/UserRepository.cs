@@ -106,5 +106,10 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
 
             return updated == 1;
         }
+
+        public async Task DeleteCartItem(int CartId)
+        {
+            await dbContext.CartItems.Where(c => c.Id == CartId).ExecuteDeleteAsync();
+        }
     }
 }

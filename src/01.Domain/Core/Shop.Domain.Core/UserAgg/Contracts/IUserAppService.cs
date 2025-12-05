@@ -25,5 +25,7 @@ namespace Shop.Domain.Core.UserAgg.Contracts
         public Task<bool> DecreaseUserWalletBalance(int userId, decimal amount);
 
         public Task<bool> IncreaseUserWalletBalance(int userId, decimal amount);
+
+        public Task DeleteCartItem(int CartId);
     }
 }

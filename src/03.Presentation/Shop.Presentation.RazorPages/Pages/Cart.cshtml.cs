@@ -21,30 +21,49 @@ namespace Shop.Presentation.RazorPages.Pages
 
         public List<CartItemDto> CartItems { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (InMemoryDataBase.OnlineUser is null)
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
             int userId = InMemoryDataBase.OnlineUser.Id;
             CartItems = await _userAppService.GetCartItemsByUserId(userId);
+
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync(List<CartItemUpdateDto> updatedItems)
+        public async Task<IActionResult> OnPostUpdateAsync([FromForm] List<CartItemUpdateDto> updatedItems)
         {
-            await _userAppService.UpdateCartItems(updatedItems);
+            if (updatedItems == null)
+                return BadRequest();
 
+            await _userAppService.UpdateCartItems(updatedItems);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnGetDelete(int Id)
+        {
+            await _userAppService.DeleteCartItem(Id);
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostCreateOrderAsync()
         {
-            int userId = InMemoryDataBase.OnlineUser.Id;
-
-            int orderId = await _orderService.CreateOrderFromCart(userId);
-            if (orderId == 0)
+            if (InMemoryDataBase.OnlineUser is null)
             {
-                // هندل کردن خطا، مثلاً ModelState.AddModelError
-                return Page();
+                return RedirectToPage("/Account/Login");
             }
-            return RedirectToPage("/Order", new { orderId });
+            else
+            {
+                int orderId = await _orderService.CreateOrderFromCart(InMemoryDataBase.OnlineUser.Id);
+                if (orderId == 0)
+                {
+                    return Page();
+                }
+                return RedirectToPage("/Order", new { orderId });
+            }
         }
     }
 }
