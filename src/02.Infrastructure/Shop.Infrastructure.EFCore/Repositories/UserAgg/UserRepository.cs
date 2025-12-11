@@ -43,6 +43,7 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
         public async Task<List<CartItemDto>> GetCartItemsByUserId(int userId)
         {
             return await dbContext.CartItems
+                    .AsNoTracking()
                 .Where(ci => ci.UserId == userId)
                 .Include(ci => ci.Product)
                 .Select(ci => new CartItemDto
@@ -76,7 +77,11 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
 
         public async Task<decimal> GetUserWalletBalance(int userId)
         {
-            return await dbContext.Users.Where(u => u.Id == userId).Select(u => u.WalletBalance).FirstOrDefaultAsync();
+            return await dbContext.Users
+                .AsNoTracking()
+                .Where(u => u.Id == userId)
+                .Select(u => u.WalletBalance)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> DecreaseUserWalletBalance(int userId, decimal amount)

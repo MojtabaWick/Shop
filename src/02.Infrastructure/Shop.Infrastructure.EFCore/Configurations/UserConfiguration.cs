@@ -24,6 +24,8 @@ namespace Shop.Infrastructure.EFCore.Configurations
                 .IsRequired()
                 .HasMaxLength(300);
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
             builder.Property(x => x.WalletBalance)
                 .HasPrecision(18, 0);
 

@@ -17,6 +17,7 @@ public class IndexModel : PageModel
     private readonly IUserAppService _userAppService;
     private readonly ICategoryAppService _categoryAppService;
     private readonly IOnlineCartItemService _onlineCartItemService;
+    private readonly ILogger<IndexModel> _logger;
 
     public List<ProductSummeryDto> Products { get; set; }
     public List<CategoryDto> Categories { get; set; }
@@ -26,12 +27,14 @@ public class IndexModel : PageModel
     public IndexModel(IProductAppService productAppService,
         IUserAppService userAppService,
         ICategoryAppService categoryAppService,
-        IOnlineCartItemService onlineCartItemService)
+        IOnlineCartItemService onlineCartItemService,
+        ILogger<IndexModel> logger)
     {
         _productAppService = productAppService;
         _userAppService = userAppService;
         _categoryAppService = categoryAppService;
         _onlineCartItemService = onlineCartItemService;
+        _logger = logger;
     }
 
     public async Task OnGetAsync(int? categoryId = null)

@@ -1,0 +1,42 @@
+﻿@page
+@model Shop.Presentation.RazorPages.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "لیست محصولات";
+}
+
+<h1>لیست محصولات</h1>
+
+<p>
+    <a asp-page="Create">ایجاد محصول جدید</a>
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>عکس</th>
+        <th>عنوان</th>
+        <th>توضیحات</th>
+        <th>قیمت</th>
+        <th>موجودی</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Products)
+    {
+        <tr>
+            <td>
+                <img src="@item.ImageUrl" alt="عکس محصول" style="width: 50px; height: auto;" />
+            </td>
+            <td>@item.Title</td>
+            <td>@item.Description</td>
+            <td>@item.Price</td>
+            <td>@item.Stock</td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">ویرایش</a> |
+                <a asp-page-handler="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟');">حذف</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -48,6 +48,7 @@ namespace Shop.Infrastructure.EFCore.Repositories.OrderAgg
         public async Task<Order?> GetOrderById(int orderId)
         {
             return await dbContext.Orders
+                .AsNoTracking()
                 .Include(o => o.Items)
                 .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
@@ -55,7 +56,11 @@ namespace Shop.Infrastructure.EFCore.Repositories.OrderAgg
 
         public async Task<decimal> GetOrderTotalPrice(int orderId)
         {
-            return await dbContext.Orders.Where(o => o.Id == orderId).Select(o => o.TotalPrice).FirstOrDefaultAsync();
+            return await dbContext.Orders
+                .AsNoTracking()
+                .Where(o => o.Id == orderId)
+                .Select(o => o.TotalPrice)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> PayOrder(int orderId)

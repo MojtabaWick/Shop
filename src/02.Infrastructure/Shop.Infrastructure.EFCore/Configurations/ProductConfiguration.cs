@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.Core.ProductAgg.Entities;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace Shop.Infrastructure.EFCore.Configurations
@@ -25,6 +26,8 @@ namespace Shop.Infrastructure.EFCore.Configurations
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasQueryFilter(p => !p.IsDeleted);
 
             builder.HasMany(x => x.OrderItems)
                 .WithOne(x => x.Product)

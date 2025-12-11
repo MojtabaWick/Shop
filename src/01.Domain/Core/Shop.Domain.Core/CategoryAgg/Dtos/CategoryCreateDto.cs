@@ -2,10 +2,8 @@
 
 namespace Shop.Domain.Core.CategoryAgg.Dtos
 {
-    public class CategoryDto
+    public class CategoryCreateDto
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "وارد کردن اسم اجباری است.")]
         [StringLength(100, ErrorMessage = "اسم نمیتواند بیشتر از 100 کاراکتر باشد.")]
         public string Name { get; set; }

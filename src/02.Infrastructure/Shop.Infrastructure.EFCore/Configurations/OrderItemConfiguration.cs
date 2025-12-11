@@ -17,6 +17,8 @@ namespace Shop.Infrastructure.EFCore.Configurations
             builder.Property(x => x.Quantity)
                 .IsRequired();
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
             builder.Ignore(x => x.TotalPrice);
 
             builder.HasOne(x => x.Order)

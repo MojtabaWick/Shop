@@ -19,6 +19,8 @@ namespace Shop.Infrastructure.EFCore.Configurations
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
             builder.HasMany(x => x.Items)
                 .WithOne(x => x.Order)
                 .HasForeignKey(x => x.OrderId)

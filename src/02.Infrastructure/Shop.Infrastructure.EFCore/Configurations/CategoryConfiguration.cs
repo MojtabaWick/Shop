@@ -15,10 +15,14 @@ namespace Shop.Infrastructure.EFCore.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(x => x.Description)
+                .HasMaxLength(250);
+
             builder.HasMany(x => x.Products)
                 .WithOne(x => x.Category)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasQueryFilter(x => !x.IsDeleted);
 
             builder.HasData(new List<Category>()
             {
