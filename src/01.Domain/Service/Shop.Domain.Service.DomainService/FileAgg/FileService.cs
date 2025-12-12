@@ -23,7 +23,7 @@ namespace Shop.Domain.Service.DomainService.FileAgg
                 await file.CopyToAsync(stream, cancellationToken);
             }
 
-            return Path.Combine("Images", folder, uniqueFileName);
+            return Path.Combine("/Images", folder, uniqueFileName);
         }
 
         public async Task DeleteByUrlAsync(string url, CancellationToken cancellationToken)

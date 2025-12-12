@@ -79,25 +79,25 @@ namespace Shop.Infrastructure.EFCore.Repositories.OrderAgg
         {
             var order = await dbContext.Orders
                 .Where(o => o.Id == id)
+                .Include(o => o.User)
                 .Include(o => o.Items)
                 .ThenInclude(i => i.Product)
                 .AsNoTracking()
-                .SelectMany(o => o.Items.Select(i => new OrderDetailDto
+                .Select(o => new OrderDetailDto
                 {
                     Id = o.Id,
                     UserId = o.UserId,
                     UserFullName = o.User.FullName,
                     Status = o.Status,
                     TotalPrice = o.TotalPrice,
-
-                    ProductId = i.ProductId,
-                    ProductName = i.Product.Title,
-
-                    UnitPrice = i.UnitPrice,
-                    Quantity = i.Quantity,
-                }))
+                    OrderItems = o.Items.Select(i => new OrderItemDetail
+                    {
+                        ProductName = i.Product.Title,
+                        UnitPrice = i.UnitPrice,
+                        Quantity = i.Quantity
+                    }).ToList()
+                })
                 .FirstOrDefaultAsync();
-
             return order ?? throw new Exception($"Order with Id : {id} not found.");
         }
 

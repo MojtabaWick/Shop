@@ -1,19 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using Shop.Domain.Core._Common;
 using Shop.Domain.Core.OrderAgg.Contracts;
+using Shop.Domain.Core.OrderAgg.Dtos;
 using Shop.Domain.Core.OrderAgg.Entities;
 using Shop.Domain.Core.ProductAgg.Contracts;
-using Shop.Domain.Core.ProductAgg.Entities;
 using Shop.Domain.Core.UserAgg.Contracts;
-using System.Reflection.Metadata;
-using Shop.Domain.Core.OrderAgg.Dtos;
 
 namespace Shop.Domain.Service.AppService.OrderAgg
 {
     public class OrderAppService(
         IOrderDomainService orderDomainService,
-        IUserAppService userAppService,
-        IProductAppService productAppService,
+        IUserDomainService uerDomainService,
         IProductDomainService productDomainService,
         ILogger<OrderAppService> _logger) : IOrderAppService
     {
@@ -29,7 +26,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
 
         public async Task<Result<bool>> PayOrder(int orderId, int userId)
         {
-            var userWallet = await userAppService.GetUserWalletBalance(userId);
+            var userWallet = await uerDomainService.GetUserWalletBalance(userId);
             var orderTotalPrice = await orderDomainService.GetOrderTotalPrice(orderId);
 
             if (userWallet < orderTotalPrice && userWallet != orderTotalPrice)
@@ -37,7 +34,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
                 return Result<bool>.Failure("موجودی برای پرداخت سفارش ناکافی است.");
             }
 
-            var resultDecreaseWallet = await userAppService.DecreaseUserWalletBalance(userId, orderTotalPrice);
+            var resultDecreaseWallet = await uerDomainService.DecreaseUserWalletBalance(userId, orderTotalPrice);
 
             if (resultDecreaseWallet)
             {
@@ -48,7 +45,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
 
                     foreach (var item in order.Items)
                     {
-                        await productAppService.DecreaseStock(item.ProductId, item.Quantity);
+                        await productDomainService.DecreaseStock(item.ProductId, item.Quantity);
 
                         var product = await productDomainService.GetProductById(item.ProductId);
 
@@ -71,7 +68,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
                     while (!resultBackToWallet)
                     {
                         resultBackToWallet =
-                            await userAppService.IncreaseUserWalletBalance(userId, orderTotalPrice);
+                            await uerDomainService.IncreaseUserWalletBalance(userId, orderTotalPrice);
                     }
 
                     return Result<bool>.Failure("خطا در پرداخت سفارش ، مبلغ کسر شده ازحساب شما عودت خواهد شد.");

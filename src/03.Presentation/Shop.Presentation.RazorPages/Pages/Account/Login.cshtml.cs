@@ -43,7 +43,7 @@ namespace Shop.Presentation.RazorPages.Pages.Account
 
                 _onlineCartItemService.AddOnlineCartItemsToDataBase(InMemoryDataBase.OnlineUser.Id);
 
-                return RedirectToPage("/Index");
+                return RedirectToPage(InMemoryDataBase.OnlineUser.Id == 1 ? "/Admin/Index" : "/Index");
             }
 
             return RedirectToPage("/Account/Login", new { message = loginResult.Message });

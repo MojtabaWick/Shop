@@ -38,6 +38,7 @@ namespace Shop.Presentation.RazorPages.Pages.Categories
             }
             else
             {
+                ModelState.Clear();
                 ModelState.AddModelError("", result.Message!);
                 return Page();
             }

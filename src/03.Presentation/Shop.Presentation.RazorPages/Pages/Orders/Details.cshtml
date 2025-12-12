@@ -1,44 +1,45 @@
 ﻿@page "{id:int}"
 @using Shop.Framework
 @model Shop.Presentation.RazorPages.Pages.Orders.DetailsModel
-
 @{
     ViewData["Title"] = "جزئیات سفارش";
+    Layout = "Shared/_AdminLayout";
 }
-
 <h1>جزئیات سفارش: @Model.Order.Id</h1>
-
 <div class="card">
     <div class="card-body">
         <dl class="row">
             <dt class="col-sm-3">شناسه سفارش</dt>
             <dd class="col-sm-9">@Model.Order.Id</dd>
-
             <dt class="col-sm-3">شناسه کاربر</dt>
             <dd class="col-sm-9">@Model.Order.UserId</dd>
-
             <dt class="col-sm-3">نام کامل کاربر</dt>
             <dd class="col-sm-9">@Model.Order.UserFullName</dd>
-
             <dt class="col-sm-3">وضعیت</dt>
-            <dd class="col-sm-9">@Model.Order.Status.GetDisplayName()</dd> 
-
+            <dd class="col-sm-9">@Model.Order.Status.GetDisplayName()</dd>
             <dt class="col-sm-3">قیمت کل</dt>
             <dd class="col-sm-9">@Model.Order.TotalPrice</dd>
-
-            <dt class="col-sm-3">شناسه محصول</dt>
-            <dd class="col-sm-9">@Model.Order.ProductId</dd>
-
-            <dt class="col-sm-3">نام محصول</dt>
-            <dd class="col-sm-9">@Model.Order.ProductName</dd>
-
-            <dt class="col-sm-3">قیمت واحد</dt>
-            <dd class="col-sm-9">@Model.Order.UnitPrice</dd>
-
-            <dt class="col-sm-3">تعداد</dt>
-            <dd class="col-sm-9">@Model.Order.Quantity</dd>
         </dl>
+        <h2>اقلام سفارش</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>قیمت واحد</th>
+                <th>تعداد</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Order.OrderItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.UnitPrice</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>
-
 <a asp-page="Index" class="btn btn-secondary mt-3">بازگشت به لیست</a>
