@@ -1,4 +1,5 @@
-﻿using Shop.Domain.Core.OrderAgg.Entities;
+﻿using Shop.Domain.Core.OrderAgg.Dtos;
+using Shop.Domain.Core.OrderAgg.Entities;
 
 namespace Shop.Domain.Core.OrderAgg.Contracts
 {
@@ -11,5 +12,9 @@ namespace Shop.Domain.Core.OrderAgg.Contracts
         public Task<decimal> GetOrderTotalPrice(int orderId);
 
         public Task<bool> PayOrder(int orderId);
+
+        public Task<OrderDetailDto> GetOrderWithDetailById(int id);
+
+        public Task<List<OrderSummeryDto>> GetAllOrdersAsync();
     }
 }

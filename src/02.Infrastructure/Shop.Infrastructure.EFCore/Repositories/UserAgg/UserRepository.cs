@@ -20,6 +20,32 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
                 }).FirstOrDefaultAsync();
         }
 
+        public async Task<UserWithDetailDto> GetUserByIdAsync(int id)
+        {
+            var user = await dbContext.Users.AsNoTracking().Where(u=>u.Id == id).Select(u => new UserWithDetailDto()
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                PhoneNumber = u.PhoneNumber,
+                WalletBalance = u.WalletBalance,
+                Address = u.Address,
+                Email = u.Email,
+                PostalCode = u.PostalCode,
+            }).FirstOrDefaultAsync();
+
+            return user ?? throw new Exception($"User with Id : {id} not found.");
+        }
+
+        public async Task<List<UserSummeryDto>> GetAllUsersAsync()
+        {
+            return await dbContext.Users.AsNoTracking().Select(u => new UserSummeryDto()
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                PhoneNumber = u.PhoneNumber,
+            }).ToListAsync();
+        }
+
         public async Task AddListCartItems(List<CartItem> input)
         {
             await dbContext.CartItems.AddRangeAsync(input);

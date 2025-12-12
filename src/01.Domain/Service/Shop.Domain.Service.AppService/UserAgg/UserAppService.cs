@@ -19,6 +19,16 @@ namespace Shop.Domain.Service.AppService.UserAgg
             }
         }
 
+        public async Task<UserWithDetailDto> GetUserByIdAsync(int id)
+        {
+            return await userDomainService.GetUserByIdAsync(id);
+        }
+
+        public async Task<List<UserSummeryDto>> GetAllUsersAsync()
+        {
+            return await userDomainService.GetAllUsersAsync();
+        }
+
         public async Task<Result<bool>> AddToCart(int userId, int productId, int quantity)
         {
             var result = await userDomainService.AddToCart(userId, productId, quantity);

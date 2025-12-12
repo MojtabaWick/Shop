@@ -7,6 +7,10 @@ namespace Shop.Domain.Core.UserAgg.Contracts
     {
         public Task<LoginOutputDto?> Login(UserLoginInput input);
 
+        public Task<UserWithDetailDto> GetUserByIdAsync(int id);
+
+        public Task<List<UserSummeryDto>> GetAllUsersAsync();
+
         public Task AddListCartItems(List<CartItem> input);
 
         public Task<int> UsrCartItemsCount(int userId);

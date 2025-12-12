@@ -1,0 +1,36 @@
+﻿@page
+@using Shop.Framework
+@model Shop.Presentation.RazorPages.Pages.Orders.IndexModel
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+
+<h1>لیست سفارشات</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>شناسه سفارش</th>
+        <th>شناسه کاربر</th>
+        <th>نام کامل کاربر</th>
+        <th>وضعیت</th>
+        <th>قیمت کل</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model.Orders)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.UserId</td>
+            <td>@order.UserFullName</td>
+            <td>@order.Status.GetDisplayName()</td>
+            <td>@order.TotalPrice</td>
+            <td>
+                <a asp-page="Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">مشاهده جزئیات</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

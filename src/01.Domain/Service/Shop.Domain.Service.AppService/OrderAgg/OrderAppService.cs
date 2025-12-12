@@ -6,6 +6,7 @@ using Shop.Domain.Core.ProductAgg.Contracts;
 using Shop.Domain.Core.ProductAgg.Entities;
 using Shop.Domain.Core.UserAgg.Contracts;
 using System.Reflection.Metadata;
+using Shop.Domain.Core.OrderAgg.Dtos;
 
 namespace Shop.Domain.Service.AppService.OrderAgg
 {
@@ -78,6 +79,16 @@ namespace Shop.Domain.Service.AppService.OrderAgg
             }
 
             return Result<bool>.Failure("خطا در انجام عملیات.");
+        }
+
+        public async Task<OrderDetailDto> GetOrderWithDetailById(int id)
+        {
+            return await orderDomainService.GetOrderWithDetailById(id);
+        }
+
+        public async Task<List<OrderSummeryDto>> GetAllOrdersAsync()
+        {
+            return await orderDomainService.GetAllOrdersAsync();
         }
     }
 }

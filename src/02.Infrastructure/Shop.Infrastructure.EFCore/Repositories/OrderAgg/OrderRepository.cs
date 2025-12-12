@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Shop.Domain.Core.OrderAgg.Contracts;
+using Shop.Domain.Core.OrderAgg.Dtos;
 using Shop.Infrastructure.EFCore.Persistence;
 
 namespace Shop.Infrastructure.EFCore.Repositories.OrderAgg
@@ -72,6 +73,44 @@ namespace Shop.Infrastructure.EFCore.Repositories.OrderAgg
                 );
 
             return updated == 1;
+        }
+
+        public async Task<OrderDetailDto> GetOrderWithDetailById(int id)
+        {
+            var order = await dbContext.Orders
+                .Where(o => o.Id == id)
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Product)
+                .AsNoTracking()
+                .SelectMany(o => o.Items.Select(i => new OrderDetailDto
+                {
+                    Id = o.Id,
+                    UserId = o.UserId,
+                    UserFullName = o.User.FullName,
+                    Status = o.Status,
+                    TotalPrice = o.TotalPrice,
+
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.Title,
+
+                    UnitPrice = i.UnitPrice,
+                    Quantity = i.Quantity,
+                }))
+                .FirstOrDefaultAsync();
+
+            return order ?? throw new Exception($"Order with Id : {id} not found.");
+        }
+
+        public async Task<List<OrderSummeryDto>> GetAllOrdersAsync()
+        {
+            return await dbContext.Orders.AsNoTracking().Select(o => new OrderSummeryDto()
+            {
+                Id = o.Id,
+                UserFullName = o.User.FullName,
+                UserId = o.UserId,
+                TotalPrice = o.TotalPrice,
+                Status = o.Status,
+            }).ToListAsync();
         }
     }
 }

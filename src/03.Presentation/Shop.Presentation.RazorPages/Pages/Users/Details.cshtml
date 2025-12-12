@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model Shop.Presentation.RazorPages.Pages.Users.DetailsModel
+
+@{
+    ViewData["Title"] = "جزئیات کاربر";
+}
+
+<h1>جزئیات کاربر: @Model.User.FullName</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">شناسه</dt>
+            <dd class="col-sm-9">@Model.User.Id</dd>
+
+            <dt class="col-sm-3">نام کامل</dt>
+            <dd class="col-sm-9">@Model.User.FullName</dd>
+
+            <dt class="col-sm-3">آدرس</dt>
+            <dd class="col-sm-9">@Model.User.Address</dd>
+
+            <dt class="col-sm-3">کد پستی</dt>
+            <dd class="col-sm-9">@Model.User.PostalCode</dd>
+
+            <dt class="col-sm-3">ایمیل</dt>
+            <dd class="col-sm-9">@Model.User.Email</dd>
+
+            <dt class="col-sm-3">شماره تلفن</dt>
+            <dd class="col-sm-9">@Model.User.PhoneNumber</dd>
+
+            <dt class="col-sm-3">موجودی کیف پول</dt>
+            <dd class="col-sm-9">@Model.User.WalletBalance</dd>
+        </dl>
+    </div>
+</div>
+
+<a asp-page="Index" class="btn btn-secondary mt-3">بازگشت به لیست</a>

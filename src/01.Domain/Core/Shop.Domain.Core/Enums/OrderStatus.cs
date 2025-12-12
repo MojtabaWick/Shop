@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Shop.Domain.Core.Enums
 {
     public enum OrderStatus
     {
-        Pending,    // تازه ایجاد شده
-        Paid,       // پرداخت شده
-        Shipped,    // ارسال شده
-        Completed,  // تکمیل شده
-        Cancelled   // لغو شده
+        [Display(Name = "تازه ایجاد شده")]
+        Pending,
+
+        [Display(Name = "پرداخت شده")]
+        Paid,
+
+        [Display(Name = "ارسال شده")]
+        Shipped,
+
+        [Display(Name = "تکمیل شده")]
+        Completed,
+
+        [Display(Name = "لغو شده")]
+        Cancelled
     }
 }

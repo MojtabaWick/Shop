@@ -10,9 +10,9 @@ namespace Shop.Domain.Core.OrderAgg.Entities
         public User User { get; set; }
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
-        public decimal TotalPrice { get; set; } // مجموع قیمت سفارش
+        public decimal TotalPrice { get; set; }
 
         // Navigation
-        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public List<OrderItem> Items { get; set; } = [];
     }
 }

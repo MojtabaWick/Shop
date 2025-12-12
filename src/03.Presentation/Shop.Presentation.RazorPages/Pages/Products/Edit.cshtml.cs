@@ -19,7 +19,7 @@ namespace Shop.Presentation.RazorPages.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var Product = await _productAppService.GetProductById(id);
+            Product = await _productAppService.GetProductById(id);
             if (Product == null)
             {
                 return NotFound();

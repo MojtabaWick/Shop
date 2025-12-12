@@ -1,0 +1,32 @@
+﻿@page
+@model Shop.Presentation.RazorPages.Pages.Users.IndexModel
+
+@{
+    ViewData["Title"] = "Users List";
+}
+
+<h1>لیست کاربران</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>شناسه</th>
+        <th>نام کامل</th>
+        <th>شماره تلفن</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.FullName</td>
+            <td>@user.PhoneNumber</td>
+            <td>
+                <a asp-page="Details" asp-route-id="@user.Id" class="btn btn-sm btn-info">مشاهده جزئیات</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

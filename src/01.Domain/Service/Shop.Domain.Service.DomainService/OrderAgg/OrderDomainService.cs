@@ -1,4 +1,5 @@
 ﻿using Shop.Domain.Core.OrderAgg.Contracts;
+using Shop.Domain.Core.OrderAgg.Dtos;
 using Shop.Domain.Core.OrderAgg.Entities;
 
 namespace Shop.Domain.Service.DomainService.OrderAgg
@@ -23,6 +24,16 @@ namespace Shop.Domain.Service.DomainService.OrderAgg
         public async Task<bool> PayOrder(int orderId)
         {
             return await orderRepository.PayOrder(orderId);
+        }
+
+        public async Task<OrderDetailDto> GetOrderWithDetailById(int id)
+        {
+            return await orderRepository.GetOrderWithDetailById(id);
+        }
+
+        public async Task<List<OrderSummeryDto>> GetAllOrdersAsync()
+        {
+            return await orderRepository.GetAllOrdersAsync();
         }
     }
 }
