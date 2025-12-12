@@ -1,10 +1,11 @@
-﻿using Shop.Domain.Core._Common;
+﻿using Microsoft.Extensions.Logging;
+using Shop.Domain.Core._Common;
 using Shop.Domain.Core.ProductAgg.Contracts;
 using Shop.Domain.Core.ProductAgg.Dtos;
 
 namespace Shop.Domain.Service.AppService.ProductAgg
 {
-    public class ProductAppService(IProductDomainService productDomainService) : IProductAppService
+    public class ProductAppService(IProductDomainService productDomainService, ILogger<ProductAppService> _logger) : IProductAppService
     {
         public async Task<List<ProductSummeryDto>> GetHomeProducts()
         {
@@ -18,11 +19,13 @@ namespace Shop.Domain.Service.AppService.ProductAgg
 
         public async Task DeleteProduct(int productId)
         {
+            _logger.LogWarning($"Deleting product with id : {productId}.");
             await productDomainService.DeleteProduct(productId);
         }
 
         public async Task UpdateProduct(ProductDto dto)
         {
+            _logger.LogInformation($"Updating product with id: {dto.Id}.");
             await productDomainService.UpdateProductAsync(dto);
         }
 
@@ -51,6 +54,7 @@ namespace Shop.Domain.Service.AppService.ProductAgg
 
             if (result)
             {
+                _logger.LogInformation("New product created.");
                 return Result<bool>.Success("ایجاد محصول با موفقیت انجام شد.");
             }
 

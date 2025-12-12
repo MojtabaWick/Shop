@@ -1,10 +1,11 @@
-﻿using Shop.Domain.Core._Common;
+﻿using Microsoft.Extensions.Logging;
+using Shop.Domain.Core._Common;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Dtos;
 
 namespace Shop.Domain.Service.AppService.UserAgg
 {
-    public class UserAppService(IUserDomainService userDomainService) : IUserAppService
+    public class UserAppService(IUserDomainService userDomainService, ILogger<UserAppService> _logger) : IUserAppService
     {
         public async Task<Result<LoginOutputDto>> Login(UserLoginInput input)
         {
@@ -15,6 +16,7 @@ namespace Shop.Domain.Service.AppService.UserAgg
             }
             else
             {
+                _logger.LogInformation($"User with id: {result.Id} logged in.");
                 return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", result);
             }
         }
@@ -34,10 +36,12 @@ namespace Shop.Domain.Service.AppService.UserAgg
             var result = await userDomainService.AddToCart(userId, productId, quantity);
             if (!result)
             {
+                _logger.LogError("error in adding a new cart item.");
                 return Result<bool>.Failure("خطا در افزودن به سبد خرید.");
             }
             else
             {
+                _logger.LogInformation("New cart item added successfully.");
                 return Result<bool>.Success("محصول با موفقیت به سبد خرید اضافه شد.");
             }
         }
@@ -54,6 +58,7 @@ namespace Shop.Domain.Service.AppService.UserAgg
 
         public async Task UpdateCartItems(List<CartItemUpdateDto> updatedItems)
         {
+            _logger.LogInformation($"Updating cart items.");
             await userDomainService.UpdateCartItems(updatedItems);
         }
 
@@ -79,6 +84,8 @@ namespace Shop.Domain.Service.AppService.UserAgg
 
         public async Task DeleteCartItem(int CartId)
         {
+            _logger.LogWarning($"Deleting Cart items from cart with id {CartId}.");
+
             await userDomainService.DeleteCartItem(CartId);
         }
     }

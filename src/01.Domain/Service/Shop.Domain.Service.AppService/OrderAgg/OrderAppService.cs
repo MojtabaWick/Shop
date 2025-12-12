@@ -16,7 +16,11 @@ namespace Shop.Domain.Service.AppService.OrderAgg
     {
         public async Task<int> CreateOrderFromCart(int userId)
         {
-            return await orderDomainService.CreateOrderFromCart(userId);
+            var orderId = await orderDomainService.CreateOrderFromCart(userId);
+
+            _logger.LogInformation($"Order with id : {orderId} Created.");
+
+            return orderId;
         }
 
         public async Task<Order> GetOrderById(int orderId)
@@ -59,6 +63,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
                             );
                         }
                     }
+                    _logger.LogInformation($"Order with id : {orderId} paid.");
 
                     return Result<bool>.Success("سفارش با موفقیت پرداخت شد.");
                 }
@@ -67,6 +72,7 @@ namespace Shop.Domain.Service.AppService.OrderAgg
                     bool resultBackToWallet = false;
                     while (!resultBackToWallet)
                     {
+                        _logger.LogInformation($"Refunding price: {orderTotalPrice} to user with id: {userId}.");
                         resultBackToWallet =
                             await uerDomainService.IncreaseUserWalletBalance(userId, orderTotalPrice);
                     }
@@ -80,6 +86,8 @@ namespace Shop.Domain.Service.AppService.OrderAgg
 
         public async Task<OrderDetailDto> GetOrderWithDetailById(int id)
         {
+            _logger.LogInformation($"Getting order with id : {id} with details.");
+
             return await orderDomainService.GetOrderWithDetailById(id);
         }
 

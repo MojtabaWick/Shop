@@ -1,10 +1,11 @@
-﻿using Shop.Domain.Core._Common;
+﻿using Microsoft.Extensions.Logging;
+using Shop.Domain.Core._Common;
 using Shop.Domain.Core.CategoryAgg.Contracts;
 using Shop.Domain.Core.CategoryAgg.Dtos;
 
 namespace Shop.Domain.Service.AppService.CategoryAgg
 {
-    public class CategoryAppService(ICategoryDomainService categoryDomainService) : ICategoryAppService
+    public class CategoryAppService(ICategoryDomainService categoryDomainService, ILogger<CategoryAppService> _logger) : ICategoryAppService
     {
         public async Task<List<CategoryDto>> GetAllCategories()
         {
@@ -14,6 +15,8 @@ namespace Shop.Domain.Service.AppService.CategoryAgg
         public async Task DeleteAsync(int categoryId)
         {
             await categoryDomainService.DeleteAsync(categoryId);
+
+            _logger.LogWarning($"Deleting Category with id : {categoryId}.");
         }
 
         public async Task<Result<bool>> CreateAsync(CategoryCreateDto dto, CancellationToken cancellationToken)
@@ -22,6 +25,8 @@ namespace Shop.Domain.Service.AppService.CategoryAgg
 
             if (result)
             {
+                _logger.LogInformation($"New Category added Successfully.");
+
                 return Result<bool>.Success("ایجاد دسته بندی با موفقیت انجام شد.");
             }
             else
@@ -38,6 +43,8 @@ namespace Shop.Domain.Service.AppService.CategoryAgg
         public async Task UpdateAsync(CategoryDto dto, CancellationToken cancellationToken)
         {
             await categoryDomainService.UpdateAsync(dto, cancellationToken);
+
+            _logger.LogInformation($"Updating Category with id : {dto.Id}.");
         }
     }
 }

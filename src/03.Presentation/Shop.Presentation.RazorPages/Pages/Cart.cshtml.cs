@@ -12,11 +12,13 @@ namespace Shop.Presentation.RazorPages.Pages
     {
         private readonly IUserAppService _userAppService;
         private readonly IOrderAppService _orderService;
+        private readonly ILogger<CartModel> _logger;
 
-        public CartModel(IUserAppService userAppService, IOrderAppService orderService)
+        public CartModel(IUserAppService userAppService, IOrderAppService orderService, ILogger<CartModel> logger)
         {
             _userAppService = userAppService;
             _orderService = orderService;
+            _logger = logger;
         }
 
         public List<CartItemDto> CartItems { get; set; }

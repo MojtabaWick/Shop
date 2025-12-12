@@ -12,11 +12,15 @@ namespace Shop.Presentation.RazorPages.Pages.Account
     {
         private readonly IUserAppService _userAppService;
         private readonly IOnlineCartItemService _onlineCartItemService;
+        private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(IUserAppService userAppService, IOnlineCartItemService onlineCartItemService)
+        public LoginModel(IUserAppService userAppService,
+            IOnlineCartItemService onlineCartItemService,
+            ILogger<LoginModel> logger)
         {
             _userAppService = userAppService;
             _onlineCartItemService = onlineCartItemService;
+            _logger = logger;
         }
 
         public string? ResultMessage { get; set; }
@@ -35,6 +39,7 @@ namespace Shop.Presentation.RazorPages.Pages.Account
 
             if (loginResult.IsSuccess)
             {
+                _logger.LogInformation($"User with Id : {loginResult.Data!.Id}");
                 InMemoryDataBase.OnlineUser = new OnlineUser
                 {
                     Id = loginResult.Data!.Id,
