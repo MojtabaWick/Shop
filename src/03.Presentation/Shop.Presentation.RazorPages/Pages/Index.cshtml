@@ -3,56 +3,107 @@
 @{
     ViewData["Title"] = "فروشگاه";
 }
-<h2 class="mb-4 fw-bold">محصولات</h2>
 
-<div class="row g-4">
+<div class="container">
 
-    <div class="col-md-3 order-md-last">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title fw-bold">دسته‌بندی‌ها</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <a asp-page="./Index" class="text-decoration-none @(Model.SelectedCategoryId == null ? "fw-bold" : "")">همه محصولات</a>
-                    </li>
-                    @foreach (var category in Model.Categories)
-                    {
+    <!-- Page Title -->
+    <h2 class="mb-4 fw-bold border-bottom pb-2">محصولات</h2>
+
+    <div class="row g-4" dir="rtl">
+
+        <!-- ===========================
+             CATEGORY FILTER (RIGHT SIDE)
+        ============================ -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">دسته‌بندی‌ها</h5>
+
+                    <ul class="list-group list-group-flush">
+
+                        <!-- All Products -->
                         <li class="list-group-item">
-                            <a asp-page="./Index" asp-route-categoryId="@category.Id" 
-                               class="text-decoration-none @(Model.SelectedCategoryId == category.Id ? "fw-bold" : "")">
-                                @category.Name
+                            <a asp-page="./Index"
+                               class="text-decoration-none d-block py-1
+                                      @(Model.SelectedCategoryId == null ? "fw-bold text-primary" : "")">
+                                همه محصولات
                             </a>
                         </li>
-                    }
-                </ul>
+
+                        <!-- Dynamic Categories -->
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li class="list-group-item">
+                                <a asp-page="./Index"
+                                   asp-route-categoryId="@category.Id"
+                                   class="text-decoration-none d-block py-1
+                                              @(Model.SelectedCategoryId == category.Id ? "fw-bold text-primary" : "")">
+                                    @category.Name
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- محصولات اصلی -->
-    <div class="col-md-9">
-        <div class="row g-4">
-            @foreach (var product in Model.Products)
-            {
-                <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Title" />
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">@product.Title</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold">@product.Price.ToString("N0") تومان</span>
-                                <div> <!-- برای گروه کردن دکمه‌ها -->
-                                    <form method="post" asp-page-handler="AddToCart" class="d-inline">
-                                        <input type="hidden" name="productId" value="@product.Id" />
-                                        <button class="btn btn-success">خرید</button>
-                                    </form>
-                                    <a asp-page="/Product" asp-route-id="@product.Id" class="btn btn-info ms-2">جزئیات</a> <!-- دکمه جدید -->
-                                </div>
+        <!-- ===========================
+             PRODUCT LIST (LEFT SIDE)
+        ============================ -->
+        <div class="col-md-9">
+            <div class="row g-4">
+
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0 h-100">
+
+                            <!-- Product Image -->
+                            <div class="text-center p-3">
+                                <img src="@product.ImageUrl"
+                                     alt="@product.Title"
+                                     class="img-fluid rounded"
+                                     style="max-height: 180px; object-fit: contain;">
+                            </div>
+
+                            <div class="card-body text-center">
+
+                                <!-- Product Title -->
+                                <h5 class="card-title fw-bold mb-2">@product.Title</h5>
+
+                                <!-- Price -->
+                                <p class="text-muted mb-1">قیمت:</p>
+                                <p class="fw-bold fs-5 text-primary mb-3">
+                                    @product.Price.ToString("N0") تومان
+                                </p>
+
+                                <!-- Buttons -->
+                                <form method="post"
+                                      asp-page-handler="AddToCart"
+                                      class="d-flex justify-content-center gap-2">
+
+                                    <input type="hidden" name="productId" value="@product.Id" />
+
+                                    <button type="submit" class="btn btn-success px-3">
+                                        خرید
+                                    </button>
+
+                                    <a asp-page="/Product"
+                                       asp-route-id="@product.Id"
+                                       class="btn btn-outline-primary px-3">
+                                        جزئیات
+                                    </a>
+
+                                </form>
+
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+
+            </div>
         </div>
+
     </div>
 </div>

@@ -2,69 +2,145 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Shop.Presentation.RazorPages</title>
-    <!-- Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - فروشگاه آنلاین</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <style>
-        /* برای اینکه Footer همیشه ته صفحه باشد */
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: #f8f9fa;
+            font-family: tahoma, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #0d6efd;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+        }
+
+        .navbar .btn-login {
+            background: #ffffff;
+            color: #0d6efd;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 6px 16px;
+        }
+
+            .navbar .btn-login:hover {
+                background: #e5e5e5;
+            }
+
+        /* Cart Icon Badge */
+        .cart-icon img {
+            width: 36px;
+            transition: .2s;
+        }
+
+        .cart-icon:hover img {
+            transform: scale(1.1);
         }
 
         main {
             flex: 1;
-            padding-top: 80px; /* فاصله برای Navbar fixed */
+            padding-top: 100px;
+        }
+
+        /* Footer */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #ddd;
         }
     </style>
 </head>
+
 <body>
-    <!-- Navbar (نمایش در همه صفحات) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="/">MyShop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow fixed-top">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="/">فروشگاه من</a>
+
+            <!-- Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- Menu -->
             <div class="collapse navbar-collapse" id="mainNavbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-page="/Index">صفحه اصلی</a>
+
+                <ul class="navbar-nav me-auto">
+
+                    <!-- Home -->
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link" asp-page="/Index">
+                            <img src="/Images/homeicon.ico" style="width:28px;">
+                        </a>
                     </li>
+
                 </ul>
+
                 <ul class="navbar-nav">
+
+                    <!-- Login -->
                     <li class="nav-item me-3">
-                        <a class="btn btn-light" asp-page="/Account/Login">ورود</a>
+                        <a class="btn btn-login" asp-page="/Account/Login">ورود</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-warning position-relative" href="/Cart">
-                            سبد خرید
+
+                    <!-- Cart -->
+                    <li class="nav-item cart-icon position-relative">
+                        <a href="/Cart">
+                            <img src="/Images/cart.ico" />
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                @await Component.InvokeAsync("CartBadge") 
+                                @await Component.InvokeAsync("CartBadge")
                             </span>
                         </a>
                     </li>
+
                 </ul>
+
             </div>
         </div>
     </nav>
-    <!-- Main content -->
-    <main class="container pb-3">
+
+
+    <!-- Main Content -->
+    <main class="container py-3">
         @RenderBody()
     </main>
+
+
     <!-- Footer -->
-    <footer class="border-top footer text-muted mt-auto py-3">
+    <footer class="py-3 text-center text-muted mt-auto">
         <div class="container">
-            &copy; 2025 - Shop.Presentation.RazorPages -
-            <a asp-area="" asp-page="/Privacy">Privacy</a>
+            © 2025 فروشگاه آنلاین —
+            <a asp-page="/Privacy" class="text-decoration-none">حریم خصوصی</a>
         </div>
     </footer>
+
+
     <!-- Bootstrap JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
