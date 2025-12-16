@@ -7,7 +7,7 @@ namespace Shop.Domain.Core.OrderAgg.Entities
     public class Order : BaseEntity
     {
         public int UserId { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public decimal TotalPrice { get; set; }

@@ -1,24 +1,41 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Shop.Domain.Core._Common;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Dtos;
+using Shop.Domain.Core.UserAgg.Entities;
 
 namespace Shop.Domain.Service.AppService.UserAgg
 {
-    public class UserAppService(IUserDomainService userDomainService, ILogger<UserAppService> _logger) : IUserAppService
+    public class UserAppService(IUserDomainService userDomainService, ILogger<UserAppService> _logger, UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager) : IUserAppService
     {
         public async Task<Result<LoginOutputDto>> Login(UserLoginInput input)
         {
-            var result = await userDomainService.Login(input);
-            if (result is null)
+            var result = await signInManager.PasswordSignInAsync(input.PhoneNumber, input.Password, false, false);
+            if (result.Succeeded)
             {
-                return Result<LoginOutputDto>.Failure("نام کاربری یا رمز عبور اشتباه است.");
+                //_logger.LogInformation($"User with id: {result.Id} logged in.");
+                return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", new LoginOutputDto()
+                {
+                    Id = 1,
+                    FullName = "admin",
+                });
             }
             else
             {
-                _logger.LogInformation($"User with id: {result.Id} logged in.");
-                return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", result);
+                return Result<LoginOutputDto>.Failure("نام کاربری یا رمز عبور اشتباه است.");
             }
+            //var result = await userDomainService.Login(input);
+            //if (result is null)
+            //{
+            //    return Result<LoginOutputDto>.Failure("نام کاربری یا رمز عبور اشتباه است.");
+            //}
+            //else
+            //{
+            //    _logger.LogInformation($"User with id: {result.Id} logged in.");
+            //    return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", result);
+            //}
         }
 
         public async Task<UserWithDetailDto> GetUserByIdAsync(int id)

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Shop.Domain.Core._Common;
 using Shop.Domain.Core.CategoryAgg.Entities;
 using Shop.Domain.Core.OrderAgg.Entities;
@@ -7,19 +10,22 @@ using Shop.Domain.Core.UserAgg.Entities;
 
 namespace Shop.Infrastructure.EFCore.Persistence
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions<AppDbContext> options) :
+        IdentityDbContext<ApplicationUser, IdentityRole<int>, int>(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Category> Categories { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .ConfigureWarnings(w =>
+                    w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,7 +45,7 @@ namespace Shop.Infrastructure.EFCore.Persistence
             modelBuilder.Entity<OrderItem>()
                 .HasQueryFilter(x => !x.IsDeleted);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasQueryFilter(x => !x.IsDeleted);
         }
 

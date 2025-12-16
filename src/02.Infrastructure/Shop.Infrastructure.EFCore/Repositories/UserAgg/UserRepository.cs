@@ -12,7 +12,7 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
         public async Task<LoginOutputDto?> Login(UserLoginInput input)
         {
             return await dbContext.Users
-                .Where(u => u.PhoneNumber == input.PhoneNumber && u.Password == input.Password)
+                .Where(u => u.PhoneNumber == input.PhoneNumber && u.PasswordHash == input.Password)
                 .Select(u => new LoginOutputDto()
                 {
                     Id = u.Id,
@@ -22,7 +22,7 @@ namespace Shop.Infrastructure.EFCore.Repositories.UserAgg
 
         public async Task<UserWithDetailDto> GetUserByIdAsync(int id)
         {
-            var user = await dbContext.Users.AsNoTracking().Where(u=>u.Id == id).Select(u => new UserWithDetailDto()
+            var user = await dbContext.Users.AsNoTracking().Where(u => u.Id == id).Select(u => new UserWithDetailDto()
             {
                 Id = u.Id,
                 FullName = u.FullName,

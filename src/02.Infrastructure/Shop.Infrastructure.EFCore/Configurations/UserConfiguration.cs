@@ -1,30 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.Core.Enums;
 using Shop.Domain.Core.UserAgg.Entities;
 
 namespace Shop.Infrastructure.EFCore.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.Property(x => x.FullName)
                 .IsRequired()
                 .HasMaxLength(150);
 
-            builder.Property(x => x.Email)
-                .HasMaxLength(200);
-
             builder.Property(x => x.PhoneNumber)
                 .IsRequired()
                 .HasMaxLength(20);
-
-            builder.Property(x => x.Password)
-                .IsRequired()
-                .HasMaxLength(300);
-
-            builder.HasQueryFilter(x => !x.IsDeleted);
 
             builder.Property(x => x.WalletBalance)
                 .HasPrecision(18, 0);
@@ -32,37 +24,49 @@ namespace Shop.Infrastructure.EFCore.Configurations
             builder.HasIndex(x => x.PhoneNumber)
                 .IsUnique();
 
-            builder.HasData(new List<User>
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
+            // ===================== SEED DATA =====================
+
+            PasswordHasher<IdentityUser<int>> passwordHasher = new PasswordHasher<IdentityUser<int>>();
+
+            var user1 = new ApplicationUser
             {
-                new User(){Id = 1 ,
-                    FullName = "admin" ,
-                    Address = "کرج" ,Password = "1234" ,
-                    PhoneNumber = "09111111111",
-                    WalletBalance = 0,
-                    Role = UserRole.Admin,
-                },
-                new User(){Id = 2 ,
-                    FullName = "مجتبی ملاعبداللهی" ,
-                    Address = "کرج" ,Password = "1234" ,
-                    PhoneNumber = "09038230353",
-                    WalletBalance = 100000000,
-                    Role = UserRole.Customer,
-                },
-                new User(){Id = 3 ,
-                    FullName = "امیر امیریگانه" ,
-                    Address = "تهران" ,Password = "1234" ,
-                    PhoneNumber = "09128230353",
-                    WalletBalance = 80000000,
-                    Role = UserRole.Customer,
-                },
-                new User(){Id = 4 ,
-                    FullName = "علی روشنی" ,
-                    Address = "تهران" ,Password = "1234" ,
-                    PhoneNumber = "09338330353",
-                    WalletBalance = 6666000,
-                    Role = UserRole.Customer,
-                },
-            });
+                Id = 1,
+                UserName = "09111111111",
+                NormalizedUserName = "09111111111",
+                PhoneNumber = "09111111111",
+                FullName = "admin",
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                Address = "کرج",
+                WalletBalance = 0,
+                Role = UserRole.Admin,
+                CreatedAt = new DateTime(2024, 1, 1),
+                IsDeleted = false,
+                SecurityStamp = new string(Guid.NewGuid().ToString()),
+                ConcurrencyStamp = new string(Guid.NewGuid().ToString()),
+            };
+            user1.PasswordHash = passwordHasher.HashPassword(user1, "1234");
+
+            var user2 = new ApplicationUser
+            {
+                Id = 2,
+                UserName = "09038230353",
+                NormalizedUserName = "09038230353",
+                PhoneNumber = "09038230353",
+                FullName = "مجتبی ملاعبداللهی",
+                Address = "کرج",
+                WalletBalance = 100000000,
+                Role = UserRole.Customer,
+                CreatedAt = new DateTime(2024, 1, 1),
+                SecurityStamp = new string(Guid.NewGuid().ToString()),
+                ConcurrencyStamp = new string(Guid.NewGuid().ToString()),
+            };
+
+            user2.PasswordHash = passwordHasher.HashPassword(user2, "1234");
+
+            builder.HasData(user1, user2);
         }
     }
 }

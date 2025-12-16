@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shop.Domain.Core.CategoryAgg.Contracts;
@@ -5,6 +6,7 @@ using Shop.Domain.Core.FileAgg.Contracts;
 using Shop.Domain.Core.OrderAgg.Contracts;
 using Shop.Domain.Core.ProductAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Contracts;
+using Shop.Domain.Core.UserAgg.Entities;
 using Shop.Domain.Service.AppService.CategoryAgg;
 using Shop.Domain.Service.AppService.OrderAgg;
 using Shop.Domain.Service.AppService.ProductAgg;
@@ -47,7 +49,24 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 #region RegisterServices
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Shop-hw22;Trusted_Connection=True;"));
+    options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Shop-hw24-identity1;Trusted_Connection=True;"));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+    {
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+        options.User.RequireUniqueEmail = false;
+        options.User.AllowedUserNameCharacters = "0123456789";
+
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 4;
+        options.Password.RequireNonAlphanumeric = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
 builder.Services.AddScoped<IProductDomainService, ProductDomainService>();

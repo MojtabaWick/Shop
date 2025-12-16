@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.Core.UserAgg.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Shop.Infrastructure.EFCore.Configurations
 {
