@@ -11,6 +11,8 @@ namespace Shop.Domain.Core.UserAgg.Contracts
     {
         public Task<Result<bool>> Login(UserLoginInput input);
 
+        public Task Logout();
+
         public Task<Result<bool>> Register(UserRegisterInput input);
 
         public Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword);

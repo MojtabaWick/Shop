@@ -35,6 +35,11 @@ namespace Shop.Domain.Service.AppService.UserAgg
             //}
         }
 
+        public async Task Logout()
+        {
+            await signInManager.SignOutAsync();
+        }
+
         public async Task<Result<bool>> Register(UserRegisterInput input)
         {
             var newUser = new ApplicationUser
