@@ -31,10 +31,12 @@ public class CartBadgeViewComponent : Microsoft.AspNetCore.Mvc.ViewComponent
 
             if (!string.IsNullOrEmpty(userIdStr) && int.TryParse(userIdStr, out int userId))
             {
-                cartCount = await _userAppService.UserCartItemsCount(userId);
+                cartCount = await _userAppService.UserCartItemsCount((int)userId);
             }
-
-            cartCount = 0;
+            else
+            {
+                cartCount = 0;
+            }
         }
 
         return View(cartCount); // برمی‌گردونه به ویو (که فقط عدد رو نمایش می‌ده)
