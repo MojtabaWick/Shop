@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shop.Domain.Core.CategoryAgg.Contracts;
@@ -68,6 +68,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     })
     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";          // وقتی لاگین نکرده
+    options.AccessDeniedPath = "/Account/AccessDenied"; // وقتی نقش/پالیسی نداره
+});
+
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
 builder.Services.AddScoped<IProductDomainService, ProductDomainService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -106,6 +112,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();   // اول Authentication
 app.UseAuthorization();
 
 app.MapStaticAssets();

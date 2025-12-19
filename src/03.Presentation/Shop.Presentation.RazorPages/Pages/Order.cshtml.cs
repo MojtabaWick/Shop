@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.OrderAgg.Contracts;
@@ -5,6 +6,7 @@ using Shop.Domain.Core.OrderAgg.Entities;
 
 namespace Shop.Presentation.RazorPages.Pages
 {
+    [Authorize]
     public class OrderModel : PageModel
     {
         private readonly IOrderAppService _orderService;

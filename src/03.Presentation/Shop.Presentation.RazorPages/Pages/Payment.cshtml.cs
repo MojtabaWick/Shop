@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Core.OrderAgg.Contracts;
 using Shop.Domain.Core.OrderAgg.Entities;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Presentation.RazorPages.DataBase;
+using Shop.Presentation.RazorPages.Extentions;
 
 namespace Shop.Presentation.RazorPages.Pages
 {
-    public class PaymentModel : PageModel
+    [Authorize]
+    public class PaymentModel : BasePageModel
     {
         private readonly IOrderAppService _orderService;
         private readonly IUserAppService _userAppService;
@@ -25,7 +28,7 @@ namespace Shop.Presentation.RazorPages.Pages
 
         public async Task<IActionResult> OnGetAsync(int orderId)
         {
-            int userId = InMemoryDataBase.OnlineUser.Id;
+            int userId = (int)GetUserId()!;
             Order = await _orderService.GetOrderById(orderId);
             if (Order == null || Order.UserId != userId)
             {
@@ -39,7 +42,7 @@ namespace Shop.Presentation.RazorPages.Pages
 
         public async Task<IActionResult> OnPostAsync(int orderId)
         {
-            int userId = InMemoryDataBase.OnlineUser.Id;
+            int userId = (int)GetUserId()!;
             var result = await _orderService.PayOrder(orderId, userId);
             if (result.IsSuccess)
             {

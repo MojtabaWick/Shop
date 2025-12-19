@@ -1,6 +1,7 @@
 ﻿using global::Shop.Domain.Core.UserAgg.Contracts;
 using global::Shop.Presentation.RazorPages.DataBase;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Shop.Presentation.RazorPages.Pages.ViewComponent;
 
@@ -18,13 +19,22 @@ public class CartBadgeViewComponent : Microsoft.AspNetCore.Mvc.ViewComponent
     {
         int cartCount;
 
-        if (InMemoryDataBase.OnlineUser is null)
+        if (!User.Identity.IsAuthenticated)
         {
             cartCount = InMemoryDataBase.OnlineCartItems.Count;
         }
         else
         {
-            cartCount = await _userAppService.UserCartItemsCount(InMemoryDataBase.OnlineUser.Id);
+            string? userIdStr = HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier)
+                ?.Value;
+
+            if (!string.IsNullOrEmpty(userIdStr) && int.TryParse(userIdStr, out int userId))
+            {
+                cartCount = await _userAppService.UserCartItemsCount(userId);
+            }
+
+            cartCount = 0;
         }
 
         return View(cartCount); // برمی‌گردونه به ویو (که فقط عدد رو نمایش می‌ده)

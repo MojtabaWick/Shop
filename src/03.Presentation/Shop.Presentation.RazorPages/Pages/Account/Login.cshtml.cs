@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Dtos;
 using Shop.Presentation.RazorPages.DataBase;
+using Shop.Presentation.RazorPages.Extentions;
 using Shop.Presentation.RazorPages.Models;
 using Shop.Presentation.RazorPages.Services.OnlineCartItem;
 
 namespace Shop.Presentation.RazorPages.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : BasePageModel
     {
         private readonly IUserAppService _userAppService;
         private readonly IOnlineCartItemService _onlineCartItemService;
@@ -39,16 +40,9 @@ namespace Shop.Presentation.RazorPages.Pages.Account
 
             if (loginResult.IsSuccess)
             {
-                _logger.LogInformation($"User with Id : {loginResult.Data!.Id}");
-                InMemoryDataBase.OnlineUser = new OnlineUser
-                {
-                    Id = loginResult.Data!.Id,
-                    FullName = loginResult.Data.FullName,
-                };
+                _onlineCartItemService.AddOnlineCartItemsToDataBase((int)GetUserId()!);
 
-                _onlineCartItemService.AddOnlineCartItemsToDataBase(InMemoryDataBase.OnlineUser.Id);
-
-                return RedirectToPage(InMemoryDataBase.OnlineUser.Id == 1 ? "/Admin/Index" : "/Index");
+                return RedirectToPage(GetUserId() == 1 ? "/Admin/Index" : "/Index");
             }
 
             return RedirectToPage("/Account/Login", new { message = loginResult.Message });

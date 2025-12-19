@@ -7,11 +7,12 @@ using Shop.Domain.Core.ProductAgg.Dtos;
 using Shop.Domain.Core.ProductAgg.Entities;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Presentation.RazorPages.DataBase;
+using Shop.Presentation.RazorPages.Extentions;
 using Shop.Presentation.RazorPages.Services.OnlineCartItem;
 
 namespace Shop.Presentation.RazorPages.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel : BasePageModel
 {
     private readonly IProductAppService _productAppService;
     private readonly IUserAppService _userAppService;
@@ -57,14 +58,14 @@ public class IndexModel : PageModel
 
     public IActionResult OnPostAddToCart(int productId)
     {
-        if (InMemoryDataBase.OnlineUser is null)
+        if (!User.Identity.IsAuthenticated)
         {
             _onlineCartItemService.AddOnlineCartItem(productId);
             return RedirectToPage();
         }
         else
         {
-            _userAppService.AddToCart(InMemoryDataBase.OnlineUser!.Id, productId, 1);
+            _userAppService.AddToCart((int)GetUserId()!, productId, 1);
             return RedirectToPage();
         }
     }

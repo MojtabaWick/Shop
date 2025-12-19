@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.OrderAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Contracts;
 using Shop.Domain.Core.UserAgg.Dtos;
 using Shop.Presentation.RazorPages.DataBase;
+using Shop.Presentation.RazorPages.Extentions;
 
 namespace Shop.Presentation.RazorPages.Pages
 {
-    public class CartModel : PageModel
+    [Authorize]
+    public class CartModel : BasePageModel
     {
         private readonly IUserAppService _userAppService;
         private readonly IOrderAppService _orderService;
@@ -25,12 +28,8 @@ namespace Shop.Presentation.RazorPages.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (InMemoryDataBase.OnlineUser is null)
-            {
-                return RedirectToPage("/Account/Login");
-            }
+            int userId = (int)GetUserId();
 
-            int userId = InMemoryDataBase.OnlineUser.Id;
             CartItems = await _userAppService.GetCartItemsByUserId(userId);
 
             return Page();
@@ -53,19 +52,12 @@ namespace Shop.Presentation.RazorPages.Pages
 
         public async Task<IActionResult> OnPostCreateOrderAsync()
         {
-            if (InMemoryDataBase.OnlineUser is null)
+            int orderId = await _orderService.CreateOrderFromCart((int)GetUserId()!);
+            if (orderId == 0)
             {
-                return RedirectToPage("/Account/Login");
+                return Page();
             }
-            else
-            {
-                int orderId = await _orderService.CreateOrderFromCart(InMemoryDataBase.OnlineUser.Id);
-                if (orderId == 0)
-                {
-                    return Page();
-                }
-                return RedirectToPage("/Order", new { orderId });
-            }
+            return RedirectToPage("/Order", new { orderId });
         }
     }
 }

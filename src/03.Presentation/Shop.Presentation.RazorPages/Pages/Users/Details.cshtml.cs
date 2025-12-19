@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.UserAgg.Contracts;
@@ -5,6 +6,7 @@ using Shop.Domain.Core.UserAgg.Dtos;
 
 namespace Shop.Presentation.RazorPages.Pages.Users
 {
+    [Authorize(Roles = "Admin")]
     public class DetailsModel : PageModel
     {
         private readonly IUserAppService _userService;

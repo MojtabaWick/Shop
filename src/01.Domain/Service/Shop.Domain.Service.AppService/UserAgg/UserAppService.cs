@@ -10,22 +10,19 @@ namespace Shop.Domain.Service.AppService.UserAgg
     public class UserAppService(IUserDomainService userDomainService, ILogger<UserAppService> _logger, UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager) : IUserAppService
     {
-        public async Task<Result<LoginOutputDto>> Login(UserLoginInput input)
+        public async Task<Result<bool>> Login(UserLoginInput input)
         {
             var result = await signInManager.PasswordSignInAsync(input.PhoneNumber, input.Password, false, false);
             if (result.Succeeded)
             {
                 //_logger.LogInformation($"User with id: {result.Id} logged in.");
-                return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", new LoginOutputDto()
-                {
-                    Id = 1,
-                    FullName = "admin",
-                });
+                return Result<bool>.Success("ورود با موفقیت انجام شد.");
             }
             else
             {
-                return Result<LoginOutputDto>.Failure("نام کاربری یا رمز عبور اشتباه است.");
+                return Result<bool>.Failure("نام کاربری یا رمز عبور اشتباه است.");
             }
+
             //var result = await userDomainService.Login(input);
             //if (result is null)
             //{
@@ -36,6 +33,46 @@ namespace Shop.Domain.Service.AppService.UserAgg
             //    _logger.LogInformation($"User with id: {result.Id} logged in.");
             //    return Result<LoginOutputDto>.Success("ورود با موفقیت انجام شد.", result);
             //}
+        }
+
+        public async Task<Result<bool>> Register(UserRegisterInput input)
+        {
+            var newUser = new ApplicationUser
+            {
+                UserName = input.PhoneNumber,
+                PhoneNumber = input.PhoneNumber,
+                Email = input.Email,
+                FullName = input.FirstName + " " + input.LastName,
+            };
+
+            var result = await userManager.CreateAsync(newUser, input.Password);
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(newUser, "User");
+
+                return Result<bool>.Success("ثبت نام با موفقیت انجام شد.");
+            }
+            else
+            {
+                return Result<bool>.Failure("خطا در ثبت نام.");
+            }
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+            }
+
+            var result = await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (result.Succeeded)
+            {
+                await signInManager.RefreshSignInAsync(user);
+            }
+            return result;
         }
 
         public async Task<UserWithDetailDto> GetUserByIdAsync(int id)

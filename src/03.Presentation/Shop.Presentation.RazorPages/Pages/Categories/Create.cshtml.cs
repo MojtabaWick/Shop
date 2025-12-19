@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.CategoryAgg.Contracts;
@@ -6,6 +7,7 @@ using System.Threading;
 
 namespace Shop.Presentation.RazorPages.Pages.Categories
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly ICategoryAppService _categoryService;

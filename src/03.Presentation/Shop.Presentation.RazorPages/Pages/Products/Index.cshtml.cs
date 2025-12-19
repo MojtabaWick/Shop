@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.ProductAgg.Contracts;
@@ -5,6 +6,7 @@ using Shop.Domain.Core.ProductAgg.Dtos;
 
 namespace Shop.Presentation.RazorPages.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         public List<ProductDto> Products { get; set; }

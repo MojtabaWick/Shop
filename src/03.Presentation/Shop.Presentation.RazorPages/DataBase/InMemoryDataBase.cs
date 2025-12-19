@@ -5,7 +5,6 @@ namespace Shop.Presentation.RazorPages.DataBase
 {
     public class InMemoryDataBase
     {
-        public static OnlineUser? OnlineUser { get; set; }
         public static List<OnlineCartItem> OnlineCartItems { get; set; } = [];
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Domain.Core.CategoryAgg.Contracts;
@@ -5,6 +6,7 @@ using Shop.Domain.Core.CategoryAgg.Dtos;
 
 namespace Shop.Presentation.RazorPages.Pages.Categories
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly ICategoryAppService _categoryService;
