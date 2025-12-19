@@ -67,6 +67,10 @@
             background: #ffffff;
             border-top: 1px solid #ddd;
         }
+
+        .extra-margin {
+            margin-right: 1rem; /* یا هر مقداری که می‌خواید، مثل 1.5rem یا 20px */
+        }
     </style>
 </head>
 
@@ -101,12 +105,22 @@
                 <ul class="navbar-nav">
 
                     <!-- Login -->
-                    <li class="nav-item me-3">
-                        <a class="btn btn-login" asp-page="/Account/Login">ورود</a>
-                    </li>
-
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form method="post" asp-page="/Account/Logout" class="me-5">
+                            <button type="submit" class="btn btn-danger">
+                                خروج
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <li class="nav-item me-5">
+                            <a class="btn btn-login" asp-page="/Account/Login">ورود</a>
+                        </li>
+                    }
                     <!-- Cart -->
-                    <li class="nav-item cart-icon position-relative">
+                    <li class="nav-item cart-icon position-relative ms-3 extra-margin">
                         <a href="/Cart">
                             <img src="/Images/cart.ico" />
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
